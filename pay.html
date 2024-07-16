@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Automatic Redirect</title>
+    <script>
+        function redirectToUrl() {
+            const url = 'https://afdian.net/dashboard/stats';
+            try {
+                window.location.href = url;
+            } catch (e) {
+                console.error('Redirect failed:', e);
+                setTimeout(redirectToUrl, 5000); // 5秒后重试
+            }
+        }
+
+        // 尝试跳转，并在失败时重试
+        redirectToUrl();
+    </script>
+</head>
+<body>
+    <!-- 页面内容 -->
+</body>
+</html>
