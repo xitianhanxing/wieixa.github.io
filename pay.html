@@ -8,22 +8,18 @@
 <body>
     <p>正在检查目标页面，请稍候...</p>
     <script>
-        const targetUrl = 'https://afdian.net/a/zzlx587'; // 实际目标网址
+        const targetUrl = 'https://afdian.net/a/zzlx587';
 
         function checkStatus() {
-            fetch(targetUrl, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = targetUrl;
-                    } else {
-                        console.log(`Status: ${response.status}`);
-                        setTimeout(checkStatus, 3000); // 每3秒检查一次
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    setTimeout(checkStatus, 3000);
-                });
+            const img = new Image();
+            img.onload = function() {
+                window.location.href = targetUrl;
+            };
+            img.onerror = function() {
+                console.log('Error loading image, retrying...');
+                setTimeout(checkStatus, 3000);
+            };
+            img.src = targetUrl + '?t=' + new Date().getTime();
         }
 
         checkStatus();
