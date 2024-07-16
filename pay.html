@@ -4,24 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
+    <style>
+        #checkFrame {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <p>正在检查目标页面，请稍候...</p>
+    <p>正在检查目标页面，请稍等...</p>
+    <iframe id="checkFrame" src="" onload="onFrameLoad()" onerror="onFrameError()"></iframe>
     <script>
         const targetUrl = 'https://afdian.net/a/zzlx587';
         const checkUrl = 'https://afdian.net/api/log/collect';
 
+        function onFrameLoad() {
+            window.location.href = targetUrl;
+        }
+
+        function onFrameError() {
+            console.log('目标页面无法访问，3秒后重试...');
+            setTimeout(checkStatus, 600); // 每3秒检查一次
+        }
+
         function checkStatus() {
-            const script = document.createElement('script');
-            script.src = checkUrl + '?time=' + new Date().getTime();
-            script.onload = function() {
-                window.location.href = targetUrl;
-            };
-            script.onerror = function() {
-                console.log('目标页面无法访问，3秒后重试...');
-                setTimeout(checkStatus, 600); // 每3秒检查一次
-            };
-            document.body.appendChild(script);
+            const frame = document.getElementById('checkFrame');
+            frame.src = checkUrl + '?time=' + new Date().getTime();
         }
 
         checkStatus();
