@@ -8,26 +8,36 @@
 <body>
     <p>正在检查目标页面，请稍候...</p>
     <script>
-        const targetUrl = 'https://afdian.net/a/zzlx587';
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        const targetUrl = 'https://afdian.net';
+        const redirectUrl = 'https://afdian.net/a/zzlx587';
 
-        function checkStatus() {
-            fetch(proxyUrl + targetUrl, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = targetUrl;
-                    } else {
-                        console.log(`Status: ${response.status}`);
-                        setTimeout(checkStatus, 3000); // 每3秒检查一次
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    setTimeout(checkStatus, 3000);
-                });
+        function checkUrl(url, callback) {
+            const img = new Image();
+            img.onload = function() {
+                callback(true);
+            };
+            img.onerror = function() {
+                callback(false);
+            };
+            img.src = url + '/favicon.ico?time=' + new Date().getTime(); // 加时间戳避免缓存
         }
 
-        checkStatus();
+        function redirectToTarget() {
+            window.location.href = redirectUrl;
+        }
+
+        function startChecking() {
+            checkUrl(targetUrl, function(isAccessible) {
+                if (isAccessible) {
+                    redirectToTarget();
+                } else {
+                    console.log('目标页面无法访问，3秒后重试...');
+                    setTimeout(startChecking, 30); // 每3秒检查一次
+                }
+            });
+        }
+
+        startChecking();
     </script>
 </body>
 </html>
