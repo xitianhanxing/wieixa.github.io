@@ -11,29 +11,17 @@
         const targetUrl = 'https://afdian.net';
         const redirectUrl = 'https://afdian.net/a/zzlx587';
 
-        function checkUrl(url, callback) {
-            const img = new Image();
-            img.onload = function() {
-                callback(true);
-            };
-            img.onerror = function() {
-                callback(false);
-            };
-            img.src = url + '/api/init/config?time=' + new Date().getTime(); // 加时间戳避免缓存
-        }
-
         function redirectToTarget() {
             window.location.href = redirectUrl;
         }
 
         function startChecking() {
-            checkUrl(targetUrl, function(isAccessible) {
-                if (isAccessible) {
+            try {
                     redirectToTarget();
-                } else {
+                }
+            catch {
                     console.log('目标页面无法访问，3秒后重试...');
                     setTimeout(startChecking, 30); // 每3秒检查一次
-                }
             });
         }
 
