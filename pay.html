@@ -8,24 +8,24 @@
 <body>
     <p>正在检查目标页面，请稍候...</p>
     <script>
-        const targetUrl = 'https://afdian.net';
-        const redirectUrl = 'https://afdian.net/a/zzlx587';
+        const targetUrl = 'https://afdian.net/a/zzlx587';
+        const checkUrl = 'https://afdian.net/api/log/collect';
 
-        function redirectToTarget() {
-            window.location.href = redirectUrl;
+        function checkStatus() {
+            const script = document.createElement('script');
+            script.src = checkUrl + '?callback=checkCallback&time=' + new Date().getTime();
+            script.onerror = function() {
+                console.log('目标页面无法访问，3秒后重试...');
+                setTimeout(checkStatus, 30); // 每3秒检查一次
+            };
+            document.body.appendChild(script);
         }
 
-        function startChecking() {
-            try {
-                    redirectToTarget();
-                }
-            catch {
-                    console.log('目标页面无法访问，3秒后重试...');
-                    setTimeout(startChecking, 30); // 每3秒检查一次
-            });
+        function checkCallback() {
+            window.location.href = targetUrl;
         }
 
-        startChecking();
+        checkStatus();
     </script>
 </body>
 </html>
