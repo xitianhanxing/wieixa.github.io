@@ -4,36 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
-    <style>
-        #checker {
-            display: none;
-        }
-    </style>
 </head>
 <body>
-    <p>正在检查目标页面，请稍候....</p>
-    <iframe id="checker" src="about:blank"></iframe>
+    <p>正在检查目标页面，请稍候...</p>
     <script>
         const targetUrl = 'https://afdian.net/a/zzlx587';
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
         function checkStatus() {
-            const iframe = document.getElementById('checker');
-            iframe.onload = function() {
-                // 尝试访问 iframe 中的内容
-                try {
-                    const content = iframe.contentWindow.document.body.innerHTML;
-                    if (content) {
+            fetch(proxyUrl + targetUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
                         window.location.href = targetUrl;
                     } else {
+                        console.log(`Status: ${response.status}`);
                         setTimeout(checkStatus, 3000); // 每3秒检查一次
                     }
-                } catch (e) {
-                    // 跨域访问被阻止
-                    console.error('Error accessing iframe content:', e);
-                    setTimeout(checkStatus, 3000); // 每3秒检查一次
-                }
-            };
-            iframe.src = targetUrl + '?t=' + new Date().getTime();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    setTimeout(checkStatus, 3000);
+                });
         }
 
         checkStatus();
