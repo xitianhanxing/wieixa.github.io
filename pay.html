@@ -13,16 +13,15 @@
 
         function checkStatus() {
             const script = document.createElement('script');
-            script.src = checkUrl + '?callback=checkCallback&time=' + new Date().getTime();
+            script.src = checkUrl + '?time=' + new Date().getTime();
+            script.onload = function() {
+                window.location.href = targetUrl;
+            };
             script.onerror = function() {
                 console.log('目标页面无法访问，3秒后重试...');
-                setTimeout(checkStatus, 500); // 每3秒检查一次
+                setTimeout(checkStatus, 600); // 每3秒检查一次
             };
             document.body.appendChild(script);
-        }
-
-        function checkCallback() {
-            window.location.href = targetUrl;
         }
 
         checkStatus();
