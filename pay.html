@@ -5,12 +5,12 @@
     <title>Automatic Redirect</title>
     <script>
         function redirectToUrl() {
-            const url = 'https://afdian.net/dashboard/stats';
+            const url = 'https://afdian.net/a/zzlx587';
             try {
                 window.location.href = url;
             } catch (e) {
                 console.error('Redirect failed:', e);
-                setTimeout(redirectToUrl, 20); // 5秒后重试
+                setTimeout(redirectToUrl, 50); // 0.05秒后重试
             }
         }
 
