@@ -19,7 +19,7 @@
             img.onerror = function() {
                 callback(false);
             };
-            img.src = url + '/favicon.ico?time=' + new Date().getTime(); // 加时间戳避免缓存
+            img.src = url + '/api/init/config?time=' + new Date().getTime(); // 加时间戳避免缓存
         }
 
         function redirectToTarget() {
