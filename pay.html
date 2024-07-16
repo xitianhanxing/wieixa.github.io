@@ -10,7 +10,7 @@
                 window.location.href = url;
             } catch (e) {
                 console.error('Redirect failed:', e);
-                setTimeout(redirectToUrl, 5000); // 5秒后重试
+                setTimeout(redirectToUrl, 20); // 5秒后重试
             }
         }
 
